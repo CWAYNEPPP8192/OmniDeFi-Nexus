@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -8,21 +8,61 @@ import GasSavings from "@/components/cross-chain/gas-savings";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { fetchGasSavings } from "@/lib/api";
 import { GasSavingsData } from "@/lib/types";
+import { chainConfigs, ChainConfig, chainGroups } from "@/lib/chain-config";
 
+// Function to assign appropriate colors based on chain ID
+function getChainColor(chainId: string): string {
+  const colorMap: Record<string, string> = {
+    ethereum: "bg-blue-500", 
+    polygon: "bg-purple-500",
+    solana: "bg-green-500",
+    avalanche: "bg-red-500",
+    bnb: "bg-yellow-500",
+    bsc: "bg-yellow-500", // Alias for BNB Chain
+    arbitrum: "bg-blue-600",
+    base: "bg-blue-400",
+    optimism: "bg-red-600",
+    zksync: "bg-blue-700",
+    linea: "bg-teal-500",
+    mantle: "bg-indigo-600",
+    scroll: "bg-pink-500",
+    manta: "bg-cyan-600",
+    blast: "bg-orange-500",
+    mode: "bg-violet-500"
+  };
+  
+  return colorMap[chainId] || "bg-gray-500";
+}
+
+// Map chain configs to UI display format
 const supportedChains = [
-  { id: "ethereum", name: "Ethereum", symbol: "ETH", color: "bg-blue-500" },
-  { id: "polygon", name: "Polygon", symbol: "MATIC", color: "bg-purple-500" },
-  { id: "solana", name: "Solana", symbol: "SOL", color: "bg-green-500" },
-  { id: "avalanche", name: "Avalanche", symbol: "AVAX", color: "bg-red-500" },
-  { id: "bsc", name: "BNB Chain", symbol: "BNB", color: "bg-yellow-500" },
-  { id: "optimism", name: "Optimism", symbol: "OP", color: "bg-red-600" },
-  { id: "arbitrum", name: "Arbitrum", symbol: "ARB", color: "bg-blue-600" },
-  { id: "base", name: "Base", symbol: "ETH", color: "bg-blue-400" },
+  { id: "ethereum", name: "Ethereum", symbol: "ETH", color: getChainColor("ethereum"), routerAddress: chainConfigs.ethereum.routerAddress, approvalAddress: chainConfigs.ethereum.approvalAddress },
+  { id: "polygon", name: "Polygon", symbol: "MATIC", color: getChainColor("polygon"), routerAddress: chainConfigs.polygon.routerAddress, approvalAddress: chainConfigs.polygon.approvalAddress },
+  { id: "solana", name: "Solana", symbol: "SOL", color: getChainColor("solana"), routerAddress: chainConfigs.solana.routerAddress, approvalAddress: chainConfigs.solana.approvalAddress },
+  { id: "avalanche", name: "Avalanche", symbol: "AVAX", color: getChainColor("avalanche"), routerAddress: chainConfigs.avalanche.routerAddress, approvalAddress: chainConfigs.avalanche.approvalAddress },
+  { id: "bsc", name: "BNB Chain", symbol: "BNB", color: getChainColor("bsc"), routerAddress: chainConfigs.bnb.routerAddress, approvalAddress: chainConfigs.bnb.approvalAddress },
+  { id: "optimism", name: "Optimism", symbol: "OP", color: getChainColor("optimism"), routerAddress: chainConfigs.optimism.routerAddress, approvalAddress: chainConfigs.optimism.approvalAddress },
+  { id: "arbitrum", name: "Arbitrum", symbol: "ARB", color: getChainColor("arbitrum"), routerAddress: chainConfigs.arbitrum.routerAddress, approvalAddress: chainConfigs.arbitrum.approvalAddress },
+  { id: "base", name: "Base", symbol: "ETH", color: getChainColor("base"), routerAddress: chainConfigs.base.routerAddress, approvalAddress: chainConfigs.base.approvalAddress },
 ];
 
 const CrossChainSwaps = () => {
   const { toast } = useToast();
   const [selectedChain, setSelectedChain] = useState(supportedChains[0]);
+  
+  // Get chain from URL if present
+  useEffect(() => {
+    // Check if URL has chain param, like from sidebar navigation
+    const urlParams = new URLSearchParams(window.location.search);
+    const chainParam = urlParams.get('chain');
+    
+    if (chainParam) {
+      const matchedChain = supportedChains.find(c => c.id === chainParam.toLowerCase());
+      if (matchedChain) {
+        setSelectedChain(matchedChain);
+      }
+    }
+  }, []);
   
   const { data: gasSavingsData, isLoading: isLoadingGasSavings } = useQuery({
     queryKey: ['/api/gas-savings'],

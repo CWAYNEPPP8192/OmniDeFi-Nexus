@@ -15,6 +15,8 @@ import { performSwap, estimateGasSavings } from "@/lib/api";
 interface SwapInterfaceProps {
   selectedChain: string;
   onSwapSuccess?: () => void;
+  routerAddress?: string;
+  approvalAddress?: string;
 }
 
 // Mock tokens for demonstration
