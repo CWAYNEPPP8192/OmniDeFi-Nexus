@@ -2,9 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PortfolioRiskData } from "@/lib/types";
+import { useEffect, useState } from "react";
 
 interface RiskAssessmentProps {
-  data?: PortfolioRiskData;
+  data?: any; // Using any to handle both API format and component format
   isLoading: boolean;
 }
 
@@ -29,26 +30,47 @@ const getRiskColor = (value: number) => {
   return "bg-green-500";
 };
 
+const getRiskLabel = (value: number) => {
+  if (value < 40) return "High Risk";
+  if (value < 70) return "Moderate";
+  return "Low Risk";
+};
+
+// Function to normalize API data to component format
+const normalizeRiskData = (apiData: any): PortfolioRiskData => {
+  // If data already has the right structure, return it
+  if (apiData.metrics && typeof apiData.riskScore === 'object') {
+    return apiData;
+  }
+  
+  // Otherwise transform from API format
+  return {
+    riskScore: {
+      value: apiData.riskScore || 50,
+      label: getRiskLabel(apiData.riskScore || 50),
+      color: getRiskColor(apiData.riskScore || 50).replace('bg-', 'text-')
+    },
+    metrics: {
+      assetDiversification: apiData.assetDiversification || 50,
+      protocolExposure: apiData.protocolExposure || 50,
+      chainDiversification: apiData.chainDiversification || 50,
+      stablecoinRatio: apiData.stablecoinRatio || 50
+    }
+  };
+};
+
 const RiskAssessment = ({ data, isLoading }: RiskAssessmentProps) => {
   // Ensure we always have valid data by using a default if data is undefined
-  const portfolioData = data || defaultData;
-
-  // Safety check to prevent runtime errors
-  if (!portfolioData || typeof portfolioData.metrics?.assetDiversification === 'undefined') {
-    console.warn('Portfolio risk data is not properly structured');
-    return (
-      <Card className="bg-card rounded-xl shadow-lg border border-border h-full">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-medium">Portfolio Risk Assessment</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center h-64">
-            <p className="text-muted-foreground">Loading risk assessment data...</p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  const rawData = data || defaultData;
+  
+  // Normalize data to component format
+  const [portfolioData, setPortfolioData] = useState<PortfolioRiskData>(defaultData);
+  
+  useEffect(() => {
+    if (rawData) {
+      setPortfolioData(normalizeRiskData(rawData));
+    }
+  }, [rawData]);
 
   return (
     <Card className="bg-card rounded-xl shadow-lg border border-border h-full">
@@ -57,35 +79,25 @@ const RiskAssessment = ({ data, isLoading }: RiskAssessmentProps) => {
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="space-y-4">
-            <Skeleton className="h-20 w-full rounded-lg" />
+          <div className="space-y-8">
+            <Skeleton className="h-12 w-12 rounded-full" />
             <div className="space-y-2">
-              <Skeleton className="h-6 w-full" />
-              <Skeleton className="h-6 w-full" />
-              <Skeleton className="h-6 w-full" />
-              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
             </div>
-            <Skeleton className="h-10 w-full" />
           </div>
         ) : (
-          <>
-            <div className="bg-background rounded-lg p-4 mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm">Risk Score</span>
-                <span className={`${portfolioData.riskScore.color} font-medium`}>
-                  {portfolioData.riskScore.label}
+          <div className="space-y-6">
+            <div className="flex items-center space-x-4">
+              <div className="h-16 w-16 rounded-full flex items-center justify-center bg-muted">
+                <span className={`text-xl font-bold ${portfolioData.riskScore.color}`}>
+                  {portfolioData.riskScore.value}
                 </span>
               </div>
-              <div className="w-full h-3 bg-muted rounded-full overflow-hidden mb-1">
-                <div 
-                  className="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full" 
-                  style={{ width: `${portfolioData.riskScore.value}%` }}
-                ></div>
-              </div>
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Low</span>
-                <span>Moderate</span>
-                <span>High</span>
+              <div>
+                <h3 className="text-lg font-medium">{portfolioData.riskScore.label}</h3>
+                <p className="text-sm text-muted-foreground">Overall Risk Score</p>
               </div>
             </div>
             
@@ -128,12 +140,8 @@ const RiskAssessment = ({ data, isLoading }: RiskAssessmentProps) => {
               </div>
             </div>
             
-            <Button 
-              className="mt-4 w-full bg-primary/10 text-primary hover:bg-primary/20"
-            >
-              View Detailed Report
-            </Button>
-          </>
+            <Button variant="outline" className="w-full">View Detailed Analysis</Button>
+          </div>
         )}
       </CardContent>
     </Card>
