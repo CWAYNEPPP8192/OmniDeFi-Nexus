@@ -133,7 +133,9 @@ const CrossChainSwaps = () => {
           <CardContent>
             <SwapInterface 
               selectedChain={selectedChain.id} 
-              onSwapSuccess={handleSwapSuccess} 
+              onSwapSuccess={handleSwapSuccess}
+              routerAddress={selectedChain.routerAddress}
+              approvalAddress={selectedChain.approvalAddress}
             />
           </CardContent>
         </Card>

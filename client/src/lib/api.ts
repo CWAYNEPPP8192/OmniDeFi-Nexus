@@ -34,8 +34,22 @@ export async function fetchMarketTrends(timeframe: string = '24h') {
   return response.json();
 }
 
-export async function performSwap(fromToken: string, toToken: string, amount: string, chain: string) {
-  return apiRequest('POST', '/api/swap', { fromToken, toToken, amount, chain });
+export async function performSwap(
+  fromToken: string, 
+  toToken: string, 
+  amount: string, 
+  chain: string,
+  routerAddress?: string,
+  approvalAddress?: string
+) {
+  return apiRequest('POST', '/api/swap', { 
+    fromToken, 
+    toToken, 
+    amount, 
+    chain,
+    routerAddress,  // Include router address if provided
+    approvalAddress // Include approval address if provided
+  });
 }
 
 export async function estimateGasSavings(fromToken: string, toToken: string, amount: string, chain: string) {

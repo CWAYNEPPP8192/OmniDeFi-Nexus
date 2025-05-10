@@ -50,7 +50,7 @@ const getDefaultTokens = (chain: string) => {
   };
 };
 
-const SwapInterface = ({ selectedChain, onSwapSuccess }: SwapInterfaceProps) => {
+const SwapInterface = ({ selectedChain, onSwapSuccess, routerAddress, approvalAddress }: SwapInterfaceProps) => {
   const { toast } = useToast();
   const chainTokens = tokens[selectedChain as keyof typeof tokens] || tokens.ethereum;
   
@@ -67,13 +67,22 @@ const SwapInterface = ({ selectedChain, onSwapSuccess }: SwapInterfaceProps) => 
   const [executionTime, setExecutionTime] = useState("< 30 seconds");
   const [transactionHash, setTransactionHash] = useState("");
   
-  // Reset tokens when chain changes
+  // Store the contract addresses for the selected chain
+  const [chainRouterAddress, setChainRouterAddress] = useState(routerAddress || "");
+  const [chainApprovalAddress, setChainApprovalAddress] = useState(approvalAddress || "");
+  
+  // Reset tokens and update addresses when chain changes
   useEffect(() => {
     const defaults = getDefaultTokens(selectedChain);
     setFromToken(defaults.from);
     setToToken(defaults.to);
+    
+    // Update contract addresses from props (if provided) or clear them
+    setChainRouterAddress(routerAddress || "");
+    setChainApprovalAddress(approvalAddress || "");
+    
     calculateSwap(defaults.from.symbol, defaults.to.symbol, "1.0");
-  }, [selectedChain]);
+  }, [selectedChain, routerAddress, approvalAddress]);
 
   // Function to calculate the swap details with enhanced OKX integration
   const calculateSwap = async (fromSymbol: string, toSymbol: string, amount: string) => {
@@ -178,8 +187,24 @@ const SwapInterface = ({ selectedChain, onSwapSuccess }: SwapInterfaceProps) => 
       // Generate a unique transaction hash for this swap
       setTransactionHash(`0x${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`);
       
-      // Execute the gasless swap via OKX DEX API
-      const response = await performSwap(fromToken.symbol, toToken.symbol, fromAmount, selectedChain);
+      // Log contract addresses for debugging
+      if (chainRouterAddress) {
+        console.log(`Using router address for ${selectedChain}: ${chainRouterAddress}`);
+      }
+      
+      if (chainApprovalAddress) {
+        console.log(`Using approval address for ${selectedChain}: ${chainApprovalAddress}`);
+      }
+      
+      // Execute the gasless swap via OKX DEX API with contract addresses
+      const response = await performSwap(
+        fromToken.symbol, 
+        toToken.symbol, 
+        fromAmount, 
+        selectedChain,
+        chainRouterAddress,  // Pass router address to the API
+        chainApprovalAddress // Pass approval address to the API
+      );
       
       // Update state to reflect success
       setSwapSuccess(true);
