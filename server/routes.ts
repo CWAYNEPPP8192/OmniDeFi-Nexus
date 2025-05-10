@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { ArbitrageService } from "./services/arbitrage";
 import { OkxService } from "./services/okx";
 import { AiService } from "./services/ai";
+import path from "path";
 
 // Services initialization
 const arbitrageService = new ArbitrageService();
@@ -184,6 +185,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       res.status(500).json({ message: "Failed to search protocols", error: (error as Error).message });
     }
+  });
+
+  // Serve the logo image
+  app.get("/images/logo.png", (req, res) => {
+    const logoPath = path.join(process.cwd(), 'images', 'OmniDeFi_Nexus_Logo.png');
+    res.sendFile(logoPath);
   });
 
   const httpServer = createServer(app);
