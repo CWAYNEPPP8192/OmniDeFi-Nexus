@@ -36,14 +36,26 @@ function getChainColor(chainId: string): string {
 
 // Map chain configs to UI display format
 const supportedChains = [
+  // Main chains
   { id: "ethereum", name: "Ethereum", symbol: "ETH", color: getChainColor("ethereum"), routerAddress: chainConfigs.ethereum.routerAddress, approvalAddress: chainConfigs.ethereum.approvalAddress },
   { id: "polygon", name: "Polygon", symbol: "MATIC", color: getChainColor("polygon"), routerAddress: chainConfigs.polygon.routerAddress, approvalAddress: chainConfigs.polygon.approvalAddress },
   { id: "solana", name: "Solana", symbol: "SOL", color: getChainColor("solana"), routerAddress: chainConfigs.solana.routerAddress, approvalAddress: chainConfigs.solana.approvalAddress },
   { id: "avalanche", name: "Avalanche", symbol: "AVAX", color: getChainColor("avalanche"), routerAddress: chainConfigs.avalanche.routerAddress, approvalAddress: chainConfigs.avalanche.approvalAddress },
   { id: "bsc", name: "BNB Chain", symbol: "BNB", color: getChainColor("bsc"), routerAddress: chainConfigs.bnb.routerAddress, approvalAddress: chainConfigs.bnb.approvalAddress },
-  { id: "optimism", name: "Optimism", symbol: "OP", color: getChainColor("optimism"), routerAddress: chainConfigs.optimism.routerAddress, approvalAddress: chainConfigs.optimism.approvalAddress },
+  
+  // Popular L2s
   { id: "arbitrum", name: "Arbitrum", symbol: "ARB", color: getChainColor("arbitrum"), routerAddress: chainConfigs.arbitrum.routerAddress, approvalAddress: chainConfigs.arbitrum.approvalAddress },
+  { id: "optimism", name: "Optimism", symbol: "OP", color: getChainColor("optimism"), routerAddress: chainConfigs.optimism.routerAddress, approvalAddress: chainConfigs.optimism.approvalAddress },
   { id: "base", name: "Base", symbol: "ETH", color: getChainColor("base"), routerAddress: chainConfigs.base.routerAddress, approvalAddress: chainConfigs.base.approvalAddress },
+  
+  // Emerging L2s & Other Networks
+  { id: "zksync", name: "zkSync Era", symbol: "ETH", color: getChainColor("zksync"), routerAddress: chainConfigs.zksync.routerAddress, approvalAddress: chainConfigs.zksync.approvalAddress },
+  { id: "linea", name: "Linea", symbol: "ETH", color: getChainColor("linea"), routerAddress: chainConfigs.linea.routerAddress, approvalAddress: chainConfigs.linea.approvalAddress },
+  { id: "mantle", name: "Mantle", symbol: "MNT", color: getChainColor("mantle"), routerAddress: chainConfigs.mantle.routerAddress, approvalAddress: chainConfigs.mantle.approvalAddress },
+  { id: "scroll", name: "Scroll", symbol: "ETH", color: getChainColor("scroll"), routerAddress: chainConfigs.scroll.routerAddress, approvalAddress: chainConfigs.scroll.approvalAddress },
+  { id: "manta", name: "Manta", symbol: "ETH", color: getChainColor("manta"), routerAddress: chainConfigs.manta.routerAddress, approvalAddress: chainConfigs.manta.approvalAddress },
+  { id: "blast", name: "Blast", symbol: "ETH", color: getChainColor("blast"), routerAddress: chainConfigs.blast.routerAddress, approvalAddress: chainConfigs.blast.approvalAddress },
+  { id: "mode", name: "Mode", symbol: "ETH", color: getChainColor("mode"), routerAddress: chainConfigs.mode.routerAddress, approvalAddress: chainConfigs.mode.approvalAddress },
 ];
 
 const CrossChainSwaps = () => {
@@ -96,23 +108,75 @@ const CrossChainSwaps = () => {
             <CardTitle className="text-lg font-medium">Supported Chains</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {supportedChains.map((chain) => (
-                <div 
-                  key={chain.id}
-                  className={`flex flex-col items-center justify-center p-3 rounded-lg border cursor-pointer transition-all ${
-                    selectedChain.id === chain.id 
-                      ? "border-primary bg-primary/5" 
-                      : "border-border bg-background hover:border-primary/50"
-                  }`}
-                  onClick={() => setSelectedChain(chain)}
-                >
-                  <div className={`w-8 h-8 rounded-full ${chain.color} flex items-center justify-center mb-2`}>
-                    <span className="text-xs font-bold text-white">{chain.symbol.charAt(0)}</span>
-                  </div>
-                  <span className="text-xs font-medium">{chain.name}</span>
+            <div className="h-[280px] overflow-y-auto pr-1">
+              {/* Main Chains Section */}
+              <div className="mb-4">
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Main Chains</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {supportedChains.slice(0, 5).map((chain) => (
+                    <div 
+                      key={chain.id}
+                      className={`flex flex-col items-center justify-center p-3 rounded-lg border cursor-pointer transition-all ${
+                        selectedChain.id === chain.id 
+                          ? "border-primary bg-primary/5" 
+                          : "border-border bg-background hover:border-primary/50"
+                      }`}
+                      onClick={() => setSelectedChain(chain)}
+                    >
+                      <div className={`w-8 h-8 rounded-full ${chain.color} flex items-center justify-center mb-2`}>
+                        <span className="text-xs font-bold text-white">{chain.symbol.charAt(0)}</span>
+                      </div>
+                      <span className="text-xs font-medium">{chain.name}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+              
+              {/* Popular L2s Section */}
+              <div className="mb-4">
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Popular L2s</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {supportedChains.slice(5, 8).map((chain) => (
+                    <div 
+                      key={chain.id}
+                      className={`flex flex-col items-center justify-center p-3 rounded-lg border cursor-pointer transition-all ${
+                        selectedChain.id === chain.id 
+                          ? "border-primary bg-primary/5" 
+                          : "border-border bg-background hover:border-primary/50"
+                      }`}
+                      onClick={() => setSelectedChain(chain)}
+                    >
+                      <div className={`w-8 h-8 rounded-full ${chain.color} flex items-center justify-center mb-2`}>
+                        <span className="text-xs font-bold text-white">{chain.symbol.charAt(0)}</span>
+                      </div>
+                      <span className="text-xs font-medium">{chain.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Emerging Networks Section */}
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Emerging Networks</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {supportedChains.slice(8).map((chain) => (
+                    <div 
+                      key={chain.id}
+                      className={`flex flex-col items-center justify-center p-3 rounded-lg border cursor-pointer transition-all ${
+                        selectedChain.id === chain.id 
+                          ? "border-primary bg-primary/5" 
+                          : "border-border bg-background hover:border-primary/50"
+                      }`}
+                      onClick={() => setSelectedChain(chain)}
+                    >
+                      <div className={`w-8 h-8 rounded-full ${chain.color} flex items-center justify-center mb-2`}>
+                        <span className="text-xs font-bold text-white">{chain.symbol.charAt(0)}</span>
+                      </div>
+                      <span className="text-xs font-medium">{chain.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
