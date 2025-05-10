@@ -5,7 +5,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowDown, RefreshCw, Info } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ArrowDown, RefreshCw, Info, Zap, AlertCircle, CheckCircle, Shield, BarChart3 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 import { performSwap, estimateGasSavings } from "@/lib/api";
@@ -57,7 +59,11 @@ const SwapInterface = ({ selectedChain, onSwapSuccess }: SwapInterfaceProps) => 
   const [estimatedFee, setEstimatedFee] = useState("0.00");
   const [estimatedSavings, setEstimatedSavings] = useState("0.00");
   const [isCalculating, setIsCalculating] = useState(false);
-  const [routeProtocols, setRouteProtocols] = useState<string[]>(["U", "S", "C"]);
+  const [routeProtocols, setRouteProtocols] = useState<string[]>(["O", "U", "C"]);
+  const [swapSuccess, setSwapSuccess] = useState(false);
+  const [swapError, setSwapError] = useState("");
+  const [executionTime, setExecutionTime] = useState("< 30 seconds");
+  const [transactionHash, setTransactionHash] = useState("");
   
   // Reset tokens when chain changes
   useEffect(() => {
@@ -260,7 +266,7 @@ const SwapInterface = ({ selectedChain, onSwapSuccess }: SwapInterfaceProps) => 
           <span className="text-green-500">≈ ${estimatedSavings}</span>
         </div>
         <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">Route</span>
+          <span className="text-muted-foreground">OKX Route</span>
           <div className="flex items-center">
             <div className="flex">
               {routeProtocols.map((protocol, index) => (
@@ -268,9 +274,10 @@ const SwapInterface = ({ selectedChain, onSwapSuccess }: SwapInterfaceProps) => 
                   key={index}
                   className={`w-5 h-5 rounded-full ${
                     protocol === "U" ? "bg-blue-500" : 
+                    protocol === "O" ? "bg-orange-500" : // OKX highlighted
                     protocol === "S" ? "bg-pink-500" : 
                     protocol === "C" ? "bg-purple-500" : 
-                    protocol === "J" ? "bg-orange-500" : 
+                    protocol === "J" ? "bg-orange-400" : 
                     "bg-green-500"
                   } flex items-center justify-center ${index > 0 ? "-ml-1" : ""} border-2 border-background text-xs text-white`}
                 >
@@ -283,14 +290,23 @@ const SwapInterface = ({ selectedChain, onSwapSuccess }: SwapInterfaceProps) => 
                 <TooltipTrigger asChild>
                   <Info className="ml-1 h-3 w-3 text-muted-foreground" />
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p>Route: {routeProtocols.map(p => 
-                    p === "U" ? "Uniswap" : 
-                    p === "S" ? "SushiSwap" : 
-                    p === "C" ? "Curve" :
-                    p === "J" ? "Jupiter" :
-                    "Raydium"
-                  ).join(" → ")}</p>
+                <TooltipContent className="p-3 max-w-xs">
+                  <div className="space-y-2">
+                    <p className="font-medium">OKX Smart Routing</p>
+                    <p className="text-xs">Route: {routeProtocols.map(p => 
+                      p === "U" ? "Uniswap" : 
+                      p === "O" ? "OKX DEX" :
+                      p === "S" ? "SushiSwap" : 
+                      p === "C" ? "Curve" :
+                      p === "J" ? "Jupiter" :
+                      "Raydium"
+                    ).join(" → ")}</p>
+                    <div className="text-xs mt-2">
+                      <p className="text-primary font-medium">✓ Gasless Execution</p>
+                      <p className="text-primary font-medium">✓ MEV Protection</p>
+                      <p className="text-primary font-medium">✓ Best Price Routing</p>
+                    </div>
+                  </div>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
