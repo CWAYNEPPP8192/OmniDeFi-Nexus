@@ -108,38 +108,52 @@ const CrossChainSwaps = () => {
           />
         </div>
         
-        {/* Routing Explainer Card */}
+        {/* OKX Gasless API Integration Card */}
         <Card className="bg-card rounded-xl shadow-lg border border-border h-full">
           <CardHeader>
-            <CardTitle className="text-lg font-medium">AI Smart Routing</CardTitle>
+            <CardTitle className="text-lg font-medium">OKX Gasless Technology</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="p-3 bg-background rounded-lg border border-border">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="font-medium">Route Optimization</span>
-                  <span className="text-xs px-2 py-1 bg-green-500/10 text-green-500 rounded-full">Saving 0.3%</span>
+                  <span className="font-medium">AI Smart Routing</span>
+                  <span className="text-xs px-2 py-1 bg-green-500/10 text-green-500 rounded-full">100% Gas Free</span>
                 </div>
                 <div className="flex items-center">
                   <div className="flex">
                     <div className="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center border-2 border-background text-xs">U</div>
                     <ArrowRight className="mx-1 h-4 w-4 text-muted-foreground" />
-                    <div className="w-7 h-7 rounded-full bg-pink-500 flex items-center justify-center border-2 border-background text-xs">S</div>
+                    <div className="w-7 h-7 rounded-full bg-orange-500 flex items-center justify-center border-2 border-background text-xs">O</div>
                     <ArrowRight className="mx-1 h-4 w-4 text-muted-foreground" />
                     <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center border-2 border-background text-xs">C</div>
                   </div>
-                  <span className="ml-2 text-xs text-muted-foreground">Via Uniswap → SushiSwap → Curve</span>
+                  <span className="ml-2 text-xs text-muted-foreground">Via Uniswap → OKX → Curve</span>
                 </div>
+              </div>
+              
+              <div className="p-3 bg-primary/5 rounded-lg border border-primary/10">
+                <h4 className="text-sm font-medium mb-2">OKX DEX API Benefits</h4>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mr-2" />
+                    <span>Zero gas fees on all transactions</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mr-2" />
+                    <span>Multi-chain liquidity aggregation</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500 mr-2" />
+                    <span>MEV protection built-in</span>
+                  </li>
+                </ul>
               </div>
               
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Price Impact:</span>
                   <span className="text-sm">0.05%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">MEV Protection:</span>
-                  <span className="text-sm text-green-500">Enabled</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Slippage Tolerance:</span>

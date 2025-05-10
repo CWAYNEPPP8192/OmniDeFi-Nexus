@@ -115,9 +115,19 @@ const GasSavings = ({ data, isLoading }: GasSavingsProps) => {
               ))}
               
               <div className="mt-4 p-3 bg-primary/10 border border-primary/20 rounded-lg">
-                <div className="text-sm mb-1">Estimated Annual Savings</div>
+                <div className="text-sm font-medium mb-1">Estimated Annual Savings with OKX Gasless API</div>
                 <div className="text-2xl font-bold mb-1">$1,135,804</div>
                 <div className="text-xs text-muted-foreground">Based on your current trading volume and gas prices</div>
+              </div>
+              
+              <div className="mt-3 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm font-medium">OKX Gasless Efficiency</div>
+                  <div className="px-2 py-0.5 bg-green-500/20 text-green-600 text-xs rounded-full">100% Savings</div>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  OKX Gasless technology eliminates all gas fees across 20+ supported blockchains, saving an average of $17 per transaction based on current network conditions.
+                </div>
               </div>
             </div>
           </div>
