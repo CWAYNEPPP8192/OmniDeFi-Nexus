@@ -216,8 +216,8 @@ export class OkxService {
         userId: 1, // Default user ID
         transactionType: "swap",
         chain,
-        gasSaved: gasSavedInUsd,
-        usdValue: gasSavedInUsd,
+        gasSaved: gasSavedInUsd.toString(), // Convert to string for decimal type
+        usdValue: gasSavedInUsd.toString(), // Convert to string for decimal type
         timestamp: new Date()
       };
       
