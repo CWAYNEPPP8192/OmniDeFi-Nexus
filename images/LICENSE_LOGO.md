@@ -2,9 +2,9 @@
 
 ## OmniDeFi Nexus Logo
 
-The OmniDeFi Nexus logo, both in vector format (SVG) and raster format (PNG), is protected by copyright as follows:
+The OmniDeFi Nexus logo, as shown in the PNG image file "OmniDeFi_Nexus_Logo_2025.png", is protected by copyright as follows:
 
-Copyright © 2023 OmniDeFi Nexus. All rights reserved.
+Copyright © 2025 OmniDeFi Nexus. All rights reserved.
 
 ### Usage Rights
 

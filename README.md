@@ -1,6 +1,6 @@
 # OmniDeFi Nexus
 
-![OmniDeFi Nexus Logo](/images/OmniDeFi_Nexus_Logo.png)
+![OmniDeFi Nexus Logo](/images/OmniDeFi_Nexus_Logo_2025.png)
 
 A cutting-edge Web3 platform that integrates advanced arbitrage trading, cross-chain DeFi tools, and AI-powered trading assistants with a focus on innovative blockchain experiences.
 
