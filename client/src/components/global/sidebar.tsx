@@ -115,12 +115,21 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
           <ul className="space-y-1">
             {chains.map((chain) => (
               <li key={chain.name}>
-                <a href="#" className="flex items-center space-x-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-muted">
+                <Link 
+                  href="/cross-chain-swaps" 
+                  className="flex items-center space-x-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-muted"
+                  onClick={(e) => {
+                    if (chain.name === "Add Chain") {
+                      e.preventDefault();
+                      // Handle add chain logic here
+                    }
+                  }}
+                >
                   <div className={`w-5 h-5 rounded-full ${chain.color} flex items-center justify-center`}>
-                    <span className="text-xs">{chain.symbol}</span>
+                    <span className="text-xs text-white">{chain.symbol}</span>
                   </div>
                   <span>{chain.name}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
