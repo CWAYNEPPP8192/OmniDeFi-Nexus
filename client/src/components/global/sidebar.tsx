@@ -93,18 +93,18 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.name}>
-              <Link href={item.path}>
-                <a className={cn(
+              <Link href={item.path} 
+                className={cn(
                   "flex items-center space-x-3 px-3 py-2 rounded-lg",
                   item.active 
                     ? "text-white bg-primary/20 border border-primary/20" 
                     : "text-muted-foreground hover:bg-muted"
-                )}>
-                  <span className={cn(item.active ? "text-primary" : "text-muted-foreground")}>
-                    {item.icon}
-                  </span>
-                  <span>{item.name}</span>
-                </a>
+                )}
+              >
+                <span className={cn(item.active ? "text-primary" : "text-muted-foreground")}>
+                  {item.icon}
+                </span>
+                <span>{item.name}</span>
               </Link>
             </li>
           ))}

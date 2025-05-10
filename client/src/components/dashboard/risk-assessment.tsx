@@ -30,7 +30,25 @@ const getRiskColor = (value: number) => {
 };
 
 const RiskAssessment = ({ data, isLoading }: RiskAssessmentProps) => {
+  // Ensure we always have valid data by using a default if data is undefined
   const portfolioData = data || defaultData;
+
+  // Safety check to prevent runtime errors
+  if (!portfolioData || typeof portfolioData.metrics?.assetDiversification === 'undefined') {
+    console.warn('Portfolio risk data is not properly structured');
+    return (
+      <Card className="bg-card rounded-xl shadow-lg border border-border h-full">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-medium">Portfolio Risk Assessment</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center h-64">
+            <p className="text-muted-foreground">Loading risk assessment data...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="bg-card rounded-xl shadow-lg border border-border h-full">
