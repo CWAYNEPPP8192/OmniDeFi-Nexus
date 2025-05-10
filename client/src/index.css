@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 222 47% 11%;
+  --foreground: 0 0% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 16% 65%;
+  --popover: 222 47% 11%;
+  --popover-foreground: 0 0% 98%;
+  --card: 222 47% 14%;
+  --card-foreground: 0 0% 98%;
+  --border: 217 33% 17%;
+  --input: 217 33% 17%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 207 90% 54%;
+  --accent-foreground: 211 100% 99%;
+  --destructive: 0 62.8% 50.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 207 90% 54%;
+  --radius: 0.5rem;
+  
+  --chart-1: 207 90% 54%;
+  --chart-2: 25 95% 53%;
+  --chart-3: 262 83% 58%;
+  --chart-4: 142 71% 45%;
+  --chart-5: 355 78% 55%;
+  
+  --sidebar-background: 223 47% 11%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 207 90% 54%;
+  --sidebar-primary-foreground: 211 100% 99%;
+  --sidebar-accent: 217 19% 27%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 217 33% 20%;
+  --sidebar-ring: 222 47% 11%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .card-glow {
+    box-shadow: 0 0 15px 0 rgba(59, 130, 246, 0.15);
+  }
+  
+  .card-highlight {
+    @apply border-blue-500/20 bg-blue-500/5;
+  }
+}
